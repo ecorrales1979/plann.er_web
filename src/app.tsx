@@ -108,7 +108,15 @@ export function App() {
                 className="flex items-center gap-2 flex-1"
               >
                 <UserRoundPlus className="size-5 text-zinc-400" />
-                <span className="text-zinc-400">Who will be in the trip?</span>
+                {emailsToInvite.length > 0 ? (
+                  <span className="text-zinc-100">
+                    {emailsToInvite.length} people invited
+                  </span>
+                ) : (
+                  <span className="text-zinc-400">
+                    Who will be in the trip?
+                  </span>
+                )}
               </button>
               <button
                 onClick={openConfirmTripModal}
