@@ -11,14 +11,14 @@ import {
   X,
 } from "lucide-react";
 import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function CreateTrip() {
   const [isGuestListOpen, setIsGuestListOpen] = useState(false);
   const [isGuestModalOpen, setIsGuestModalOpen] = useState(false);
   const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false);
-  const [emailsToInvite, setEmailsToInvite] = useState<string[]>([
-    "ecorrales1979@gmail.com",
-  ]);
+  const [emailsToInvite, setEmailsToInvite] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const openGuestList = () => setIsGuestListOpen(true);
 
@@ -31,6 +31,10 @@ export function CreateTrip() {
   const openConfirmTripModal = () => setIsConfirmTripModalOpen(true);
 
   const closeConfirmTripModal = () => setIsConfirmTripModalOpen(false);
+
+  const createTrip = () => {
+    navigate("/trips/123");
+  };
 
   const addEmailToInviteList = (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
@@ -247,6 +251,7 @@ export function CreateTrip() {
               </div>
               <button
                 type="submit"
+                onClick={createTrip}
                 className="w-full bg-lime-300 text-lime-950 rounded-lg px-5 h-11 font-medium flex justify-center items-center gap-2 hover:bg-lime-400"
               >
                 Confirm trip creation
