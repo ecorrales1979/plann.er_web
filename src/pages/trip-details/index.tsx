@@ -1,7 +1,8 @@
-import { Calendar, MapPin, Plus, Settings2 } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import { Activities } from "./activities";
 import { CreateActivityModal } from "./create-activity-modal";
+import { DestinationAndDateHeader } from "./destination-and-date-header";
 import { Guests } from "./guests";
 import { ImportantLinks } from "./important-links";
 
@@ -15,26 +16,7 @@ export function TripDetails() {
 
   return (
     <div className="max-w-6xl px-6 py-10 mx-auto space-y-8">
-      <div className="px-4 h-16 rounded-xl bg-zinc-900 shadow-shape flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <MapPin className="size-5 text-zinc-400" />
-          <span className="text-zinc-100">Rio de Janeiro, Brazil</span>
-        </div>
-
-        <div className="flex items-center gap-5">
-          <div className="flex items-center gap-2">
-            <Calendar className="size-5 text-zinc-400" />
-            <span className="text-zinc-100">September, 24th to 29th</span>
-          </div>
-
-          <div className="w-px h-6 bg-zinc-800" />
-
-          <button className="bg-zinc-800 text-zinc-200 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-zinc-700">
-            Change place/date
-            <Settings2 className="size-5" />
-          </button>
-        </div>
-      </div>
+      <DestinationAndDateHeader />
 
       <main className="flex gap-16 px-4">
         <div className="flex-1 space-y-6">
