@@ -1,5 +1,6 @@
-import { Calendar, CircleCheck, MapPin, Plus, Settings2 } from "lucide-react";
+import { Calendar, MapPin, Plus, Settings2 } from "lucide-react";
 import { useState } from "react";
+import { Activities } from "./activities";
 import { CreateActivityModal } from "./create-activity-modal";
 import { Guests } from "./guests";
 import { ImportantLinks } from "./important-links";
@@ -48,40 +49,7 @@ export function TripDetails() {
             </button>
           </div>
 
-          <div className="space-y-8">
-            <div className="space-y-2.5">
-              <div className="flex items-baseline gap-2">
-                <span className="text-xl text-zinc-300 font-semibold">
-                  Day 17
-                </span>
-                <span className="text-xs text-zinc-500">Saturday</span>
-              </div>
-              <p className="text-zinc-500 text-sm">
-                No activities registered on this date
-              </p>
-            </div>
-
-            <div className="space-y-2.5">
-              <div className="flex items-baseline gap-2">
-                <span className="text-xl text-zinc-300 font-semibold">
-                  Day 18
-                </span>
-                <span className="text-xs text-zinc-500">Sunday</span>
-              </div>
-              <div className="space-y-2.5">
-                <div className="px-4 py-2.5 bg-zinc-900 rounded-xl shadow-shape flex items-center gap-3">
-                  <CircleCheck className="size-5 text-lime-300" />
-                  <span className="text-zinc-100">First activity</span>
-                  <span className="text-zinc-400 text-sm ml-auto">08:00h</span>
-                </div>
-                <div className="px-4 py-2.5 bg-zinc-900 rounded-xl shadow-shape flex items-center gap-3">
-                  <CircleCheck className="size-5 text-lime-300" />
-                  <span className="text-zinc-100">Other activity</span>
-                  <span className="text-zinc-400 text-sm ml-auto">08:00h</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Activities />
         </div>
         <div className="w-80 space-y-6">
           <ImportantLinks />
