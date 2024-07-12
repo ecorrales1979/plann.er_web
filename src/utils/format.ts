@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 
-export function formatDateAndMonth(date: Date) {
+export function formatDateAndMonth(date: Date | string) {
   return format(date, "LLL', 'do");
 }
 
@@ -8,8 +8,8 @@ export function formatDateAndMonthRange({
   from,
   to,
 }: {
-  from?: Date;
-  to?: Date;
+  from?: Date | string;
+  to?: Date | string;
 }) {
   if (!from || !to) return "";
 
