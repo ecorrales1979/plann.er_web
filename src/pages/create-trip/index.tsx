@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../lib/axios";
 import { ConfirmTripModal } from "./confirm-trip-modal";
 import { InviteGuestsModal } from "./invite-guests-modal";
 import { DestinationAndDateStep } from "./steps/destination-and-date-step";
@@ -31,7 +32,7 @@ export function CreateTrip() {
 
   const closeConfirmTripModal = () => setIsConfirmTripModalOpen(false);
 
-  const createTrip = (event: FormEvent<HTMLFormElement>) => {
+  const createTrip = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log({
       destination,
@@ -40,7 +41,30 @@ export function CreateTrip() {
       ownerEmail,
       emailsToInvite,
     });
-    navigate("/trips/123");
+
+    if (
+      !destination ||
+      !eventStartAndEndDates?.from ||
+      !eventStartAndEndDates.to ||
+      emailsToInvite.length === 0 ||
+      !ownerEmail ||
+      !ownerName
+    ) {
+      return;
+    }
+
+    const response = await api.post("/trips", {
+      destination,
+      starts_at: eventStartAndEndDates.from,
+      ends_at: eventStartAndEndDates.to,
+      emails_to_invite: emailsToInvite,
+      owner_name: ownerName,
+      owner_email: ownerEmail,
+    });
+
+    const { tripId } = response.data;
+
+    navigate(`/trips/${tripId}`);
   };
 
   const addEmailToInviteList = (ev: FormEvent<HTMLFormElement>) => {
