@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react";
+import { DateRange } from "react-day-picker";
 import { useNavigate } from "react-router-dom";
 import { ConfirmTripModal } from "./confirm-trip-modal";
 import { InviteGuestsModal } from "./invite-guests-modal";
@@ -10,6 +11,12 @@ export function CreateTrip() {
   const [isGuestModalOpen, setIsGuestModalOpen] = useState(false);
   const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false);
   const [emailsToInvite, setEmailsToInvite] = useState<string[]>([]);
+  const [destination, setDestination] = useState("");
+  const [eventStartAndEndDates, setEventStartAndEndDates] = useState<
+    DateRange | undefined
+  >();
+  const [ownerName, setOwnerName] = useState("");
+  const [ownerEmail, setOwnerEmail] = useState("");
   const navigate = useNavigate();
 
   const openGuestList = () => setIsGuestListOpen(true);
@@ -26,6 +33,13 @@ export function CreateTrip() {
 
   const createTrip = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log({
+      destination,
+      eventStartAndEndDates,
+      ownerName,
+      ownerEmail,
+      emailsToInvite,
+    });
     navigate("/trips/123");
   };
 
@@ -57,8 +71,12 @@ export function CreateTrip() {
         <div className="space-y-4">
           <DestinationAndDateStep
             closeGuestList={closeGuestList}
+            destination={destination}
+            eventStartAndEndDates={eventStartAndEndDates}
             isGuestListOpen={isGuestListOpen}
             openGuestList={openGuestList}
+            setDestination={setDestination}
+            setEventStartAndEndDates={setEventStartAndEndDates}
           />
 
           {isGuestListOpen && (
@@ -97,6 +115,10 @@ export function CreateTrip() {
         <ConfirmTripModal
           closeConfirmTripModal={closeConfirmTripModal}
           createTrip={createTrip}
+          ownerEmail={ownerEmail}
+          ownerName={ownerName}
+          setOwnerEmail={setOwnerEmail}
+          setOwnerName={setOwnerName}
         />
       )}
     </div>
