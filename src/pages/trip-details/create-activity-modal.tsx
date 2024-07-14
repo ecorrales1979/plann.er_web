@@ -1,24 +1,41 @@
 import { Calendar, Tag } from "lucide-react";
+import { FormEvent } from "react";
+import { useParams } from "react-router-dom";
 import { Button } from "../../components/button";
 import { Modal } from "../../components/modal";
+import { api } from "../../lib/axios";
 
 type Props = {
   closeCreateActivityModal: () => void;
 };
 
 export function CreateActivityModal({ closeCreateActivityModal }: Props) {
+  const { tripId } = useParams();
+
+  const createActivity = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    const title = data.get("title");
+    const occurs_at = data.get("occurs_at");
+    console.log({ title, occurs_at });
+    api.post(`/trips/${tripId}/activities`, { title, occurs_at }).then(() => {
+      closeCreateActivityModal();
+    });
+  };
+
   return (
     <Modal
       title="Register activity"
       subtitle="All guests can view the activities."
       onClose={closeCreateActivityModal}
     >
-      <form className="space-y-3">
+      <form onSubmit={createActivity} className="space-y-3">
         <div className="h-14 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-2">
           <Tag className="size-5 text-zinc-400" />
           <input
             type="text"
-            name="name"
+            name="title"
             placeholder="Activity name"
             className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
           />
@@ -27,7 +44,7 @@ export function CreateActivityModal({ closeCreateActivityModal }: Props) {
           <Calendar className="size-5 text-zinc-400" />
           <input
             type="datetime-local"
-            name="date"
+            name="occurs_at"
             placeholder="Date"
             className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
           />
