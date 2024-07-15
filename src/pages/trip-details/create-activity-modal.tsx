@@ -18,7 +18,6 @@ export function CreateActivityModal({ closeCreateActivityModal }: Props) {
 
     const title = data.get("title");
     const occurs_at = data.get("occurs_at");
-    console.log({ title, occurs_at });
     api.post(`/trips/${tripId}/activities`, { title, occurs_at }).then(() => {
       closeCreateActivityModal();
     });
