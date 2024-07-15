@@ -1,9 +1,9 @@
 import { format } from "date-fns";
-import { CircleCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ActivitiesPerDate, ActivitiesResponseDTO } from "../../dtos";
 import { api } from "../../lib/axios";
+import { Activity } from "./activity";
 
 export function Activities() {
   const { tripId } = useParams();
@@ -37,16 +37,7 @@ export function Activities() {
           ) : (
             <div className="space-y-2.5">
               {activitiesPerDate.activities.map((activity) => (
-                <div
-                  key={`activity_${activity.id}`}
-                  className="px-4 py-2.5 bg-zinc-900 rounded-xl shadow-shape flex items-center gap-3"
-                >
-                  <CircleCheck className="size-5 text-lime-300" />
-                  <span className="text-zinc-100">{activity.title}</span>
-                  <span className="text-zinc-400 text-sm ml-auto">
-                    {format(activity.occurs_at, "HH:mm'h'")}
-                  </span>
-                </div>
+                <Activity key={`activity_${activity.id}`} activity={activity} />
               ))}
             </div>
           )}
