@@ -1,0 +1,22 @@
+{
+  "roots": ["<rootDir>/src"],
+  "preset": "ts-jest",
+  "testEnvironment": "jsdom",
+  "moduleNameMapper": {
+    "@/(.*)": "<rootDir>/src/$1",
+    "\\.scss$": "identity-obj-proxy"
+  },
+  "transform": {
+    "^.+\\.ts?$": "ts-jest",
+    "^.+\\.tsx?$": "ts-jest",
+    "^.+\\.js?$": "babel-jest",
+    "^.+\\.jsx?$": "babel-jest"
+  },
+  "transformIgnorePatterns": ["node_modules/(?!variables/.*)"],
+  "testPathIgnorePatterns": ["<rootDir>/node_modules/"],
+  "testMatch": ["**/*.spec.ts"],
+  "collectCoverage": true,
+  "coverageDirectory": "coverage",
+  "coverageProvider": "v8",
+  "verbose": true
+}
