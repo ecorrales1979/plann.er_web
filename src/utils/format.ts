@@ -1,4 +1,4 @@
-import { addMinutes, format } from 'date-fns';
+import { addMinutes, compareDesc, format } from 'date-fns';
 
 export function formatDateAndMonth(date: Date | string) {
   const adjustedDate = getDateUTC(date);
@@ -14,8 +14,15 @@ export function formatDateAndMonthRange({
 }) {
   if (!from || !to) return '';
 
-  const formattedFrom = formatDateAndMonth(from);
-  const formattedTo = formatDateAndMonth(to);
+  const dateRangeOrder = compareDesc(from, to);
+
+  if (dateRangeOrder === 0) return formatDateAndMonth(from);
+
+  const orderedFrom = dateRangeOrder === 1 ? from : to;
+  const orderedTo = dateRangeOrder === 1 ? to : from;
+
+  const formattedFrom = formatDateAndMonth(orderedFrom);
+  const formattedTo = formatDateAndMonth(orderedTo);
   return [formattedFrom, 'to', formattedTo].join(' ');
 }
 
