@@ -28,3 +28,6 @@ dist-ssr
 .env.local
 .env.stage
 .ev.production
+
+# Tests
+coverage/*
