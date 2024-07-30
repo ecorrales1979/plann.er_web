@@ -28,6 +28,5 @@ export function formatDateAndMonthRange({
 
 function getDateUTC(date: string | Date): Date {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
-  console.log(dateObj.getTimezoneOffset());
   return addMinutes(dateObj, dateObj.getTimezoneOffset());
 }
