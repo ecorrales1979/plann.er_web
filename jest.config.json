@@ -14,9 +14,20 @@
   },
   "transformIgnorePatterns": ["node_modules/(?!variables/.*)"],
   "testPathIgnorePatterns": ["<rootDir>/node_modules/"],
-  "testMatch": ["**/*.spec.ts"],
   "collectCoverage": true,
   "coverageDirectory": "coverage",
   "coverageProvider": "v8",
-  "verbose": true
+  "verbose": true,
+
+  "setupFilesAfterEnv": [
+    "@testing-library/jest-dom/jest-globals",
+    "@testing-library/jest-dom"
+  ],
+
+  "globals": {
+    "ts-jest": {
+      "tsconfig": "tsconfig.app.json"
+    }
+  }
+  
 }
