@@ -1,7 +1,7 @@
-import { AtSign, Plus, X } from "lucide-react";
-import { FormEvent } from "react";
-import { Button } from "../../components/button";
-import { Modal } from "../../components/modal";
+import { AtSign, Plus, X } from 'lucide-react';
+import { FormEvent } from 'react';
+import { Button } from '../../components/button';
+import { Modal } from '../../components/modal';
 
 type Props = {
   closeGuestsModal: () => void;

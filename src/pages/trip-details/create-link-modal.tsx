@@ -1,9 +1,9 @@
-import { Link2, Tag } from "lucide-react";
-import { FormEvent } from "react";
-import { useParams } from "react-router-dom";
-import { Button } from "../../components/button";
-import { Modal } from "../../components/modal";
-import { api } from "../../lib/axios";
+import { Link2, Tag } from 'lucide-react';
+import { FormEvent } from 'react';
+import { useParams } from 'react-router-dom';
+import { Button } from '../../components/button';
+import { Modal } from '../../components/modal';
+import { api } from '../../lib/axios';
 
 type Props = {
   onClose: () => void;
@@ -16,8 +16,8 @@ export function CreateLinkModal({ onClose }: Props) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    const title = data.get("title");
-    const url = data.get("url");
+    const title = data.get('title');
+    const url = data.get('url');
     api.post(`/trips/${tripId}/links`, { title, url }).then(() => {
       onClose();
     });

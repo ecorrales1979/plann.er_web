@@ -1,10 +1,10 @@
-import { ArrowRight, Calendar, MapPin, Settings2 } from "lucide-react";
-import { useState } from "react";
-import { DateRange, DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
-import { Button } from "../../../components/button";
-import { Modal } from "../../../components/modal";
-import { formatDateAndMonthRange } from "../../../utils/format";
+import { ArrowRight, Calendar, MapPin, Settings2 } from 'lucide-react';
+import { useState } from 'react';
+import { DateRange, DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
+import { Button } from '../../../components/button';
+import { Modal } from '../../../components/modal';
+import { formatDateAndMonthRange } from '../../../utils/format';
 
 type Props = {
   isGuestListOpen: boolean;
@@ -33,7 +33,7 @@ export function DestinationAndDateStep({
 
   const displayedDate = eventStartAndEndDates
     ? formatDateAndMonthRange(eventStartAndEndDates)
-    : "When?";
+    : 'When?';
 
   return (
     <div className="h-16 px-4 bg-zinc-900 rounded-xl flex items-center gap-3 shadow-shape">

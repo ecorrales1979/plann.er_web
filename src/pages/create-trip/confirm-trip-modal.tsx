@@ -1,7 +1,7 @@
-import { Mail, User } from "lucide-react";
-import { FormEvent } from "react";
-import { Button } from "../../components/button";
-import { Modal } from "../../components/modal";
+import { Mail, User } from 'lucide-react';
+import { FormEvent } from 'react';
+import { Button } from '../../components/button';
+import { Modal } from '../../components/modal';
 
 type Props = {
   closeConfirmTripModal: () => void;
@@ -25,11 +25,11 @@ export function ConfirmTripModal({
       title="Confirm trip creation"
       subtitle={
         <>
-          To complete the creation of the trip to{" "}
+          To complete the creation of the trip to{' '}
           <span className="font-semibold text-zinc-100">
             Florianópolis, Brazil
-          </span>{" "}
-          on the dates of{" "}
+          </span>{' '}
+          on the dates of{' '}
           <span className="font-semibold text-zinc-100">
             August 16th to 27th, 2024
           </span>

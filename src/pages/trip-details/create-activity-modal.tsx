@@ -1,9 +1,9 @@
-import { Calendar, Tag } from "lucide-react";
-import { FormEvent } from "react";
-import { useParams } from "react-router-dom";
-import { Button } from "../../components/button";
-import { Modal } from "../../components/modal";
-import { api } from "../../lib/axios";
+import { Calendar, Tag } from 'lucide-react';
+import { FormEvent } from 'react';
+import { useParams } from 'react-router-dom';
+import { Button } from '../../components/button';
+import { Modal } from '../../components/modal';
+import { api } from '../../lib/axios';
 
 type Props = {
   closeCreateActivityModal: () => void;
@@ -16,8 +16,8 @@ export function CreateActivityModal({ closeCreateActivityModal }: Props) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    const title = data.get("title");
-    const occurs_at = data.get("occurs_at");
+    const title = data.get('title');
+    const occurs_at = data.get('occurs_at');
     api.post(`/trips/${tripId}/activities`, { title, occurs_at }).then(() => {
       closeCreateActivityModal();
     });
