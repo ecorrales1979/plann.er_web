@@ -14,7 +14,7 @@ type Props = PropsWithChildren<
 export function Modal({ children, onClose, size, subtitle, title }: Props) {
   return (
     <div className="fixed bg-black/60 inset-0 flex items-center justify-center">
-      <div className={modalVariants({ size })}>
+      <div role="dialog" className={modalVariants({ size })}>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             {!!title && <h2 className="text-lg font-semibold">{title}</h2>}
