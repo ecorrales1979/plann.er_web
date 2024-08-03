@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { DateRange, DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { Button } from '../../../components/button';
+import { Input } from '../../../components/input';
 import { Modal } from '../../../components/modal';
 import { formatDateAndMonthRange } from '../../../utils/format';
 
@@ -39,13 +40,12 @@ export function DestinationAndDateStep({
     <div className="h-16 px-4 bg-zinc-900 rounded-xl flex items-center gap-3 shadow-shape">
       <div className="flex items-center gap-2 flex-1">
         <MapPin className="size-5 text-zinc-400" />
-        <input
+        <Input
           type="text"
           placeholder="Where do you go?"
           value={destination}
           onChange={(ev) => setDestination(ev.target.value)}
           disabled={isGuestListOpen}
-          className="bg-transparent text-lg placeholder-zinc-400 outline-none w-full"
         />
       </div>
 

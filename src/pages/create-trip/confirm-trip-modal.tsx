@@ -1,6 +1,7 @@
 import { Mail, User } from 'lucide-react';
 import { FormEvent } from 'react';
 import { Button } from '../../components/button';
+import { Input } from '../../components/input';
 import { Modal } from '../../components/modal';
 
 type Props = {
@@ -41,24 +42,22 @@ export function ConfirmTripModal({
       <form onSubmit={createTrip} className="space-y-3">
         <div className="h-14 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-2">
           <User className="size-5 text-zinc-400" />
-          <input
+          <Input
             type="text"
             name="name"
             value={ownerName}
             onChange={(ev) => setOwnerName(ev.target.value)}
             placeholder="Type your full name"
-            className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
           />
         </div>
         <div className="h-14 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-2">
           <Mail className="size-5 text-zinc-400" />
-          <input
+          <Input
             type="email"
             name="email"
             value={ownerEmail}
             onChange={(ev) => setOwnerEmail(ev.target.value)}
             placeholder="Type your personal email"
-            className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
           />
         </div>
         <Button type="submit" color="primary" size="full">
