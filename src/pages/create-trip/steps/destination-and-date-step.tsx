@@ -15,6 +15,7 @@ type Props = {
   setDestination: (destination: string) => void;
   eventStartAndEndDates?: DateRange;
   setEventStartAndEndDates: (range?: DateRange) => void;
+  errors: Record<string, string>;
 };
 
 export function DestinationAndDateStep({
@@ -25,6 +26,7 @@ export function DestinationAndDateStep({
   openGuestList,
   setDestination,
   setEventStartAndEndDates,
+  errors,
 }: Props) {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
@@ -38,7 +40,7 @@ export function DestinationAndDateStep({
 
   return (
     <div className="h-16 px-4 bg-zinc-900 rounded-xl flex items-center gap-3 shadow-shape">
-      <div className="flex items-center gap-2 flex-1">
+      <div className="relative flex items-center gap-2 flex-1">
         <MapPin className="size-5 text-zinc-400" />
         <Input
           type="text"
@@ -47,17 +49,27 @@ export function DestinationAndDateStep({
           onChange={(ev) => setDestination(ev.target.value)}
           disabled={isGuestListOpen}
         />
+        {errors.destination && (
+          <div className="absolute -bottom-4 left-7 text-red-700 text-xs">
+            {errors.destination}
+          </div>
+        )}
       </div>
 
       <button
         onClick={openDatePicker}
         disabled={isGuestListOpen}
-        className="flex items-center gap-2 w-40"
+        className="relative flex items-center gap-2 w-40"
       >
         <Calendar className="size-5 text-zinc-400" />
         <span className="bg-transparent text-sm placeholder-zinc-400 outline-none w-full">
           {displayedDate}
         </span>
+        {errors.eventStartAndEndDates && (
+          <div className="absolute -bottom-4 left-7 text-red-700 text-xs">
+            {errors.eventStartAndEndDates}
+          </div>
+        )}
       </button>
 
       {isDatePickerOpen && (

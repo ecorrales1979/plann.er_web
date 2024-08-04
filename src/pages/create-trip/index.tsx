@@ -1,23 +1,40 @@
-import { FormEvent, useState } from "react";
-import { DateRange } from "react-day-picker";
-import { useNavigate } from "react-router-dom";
-import { api } from "../../lib/axios";
-import { ConfirmTripModal } from "./confirm-trip-modal";
-import { InviteGuestsModal } from "./invite-guests-modal";
-import { DestinationAndDateStep } from "./steps/destination-and-date-step";
-import { InviteGuestsStep } from "./steps/invite-guests-step";
+import { FormEvent, useState } from 'react';
+import { DateRange } from 'react-day-picker';
+import { useNavigate } from 'react-router-dom';
+import { z } from 'zod';
+import { api } from '../../lib/axios';
+import { ConfirmTripModal } from './confirm-trip-modal';
+import { InviteGuestsModal } from './invite-guests-modal';
+import { DestinationAndDateStep } from './steps/destination-and-date-step';
+import { InviteGuestsStep } from './steps/invite-guests-step';
+
+const createTripSchema = z.object({
+  destination: z.string().min(1, 'Destination is required'),
+  eventStartAndEndDates: z.object(
+    {
+      from: z.date({ message: 'Start date is required' }),
+      to: z.date({ invalid_type_error: 'End date is required' }),
+    },
+    { message: 'Dates are required' }
+  ),
+  emailsToInvite: z.array(z.string().email()),
+  ownerName: z.string().min(1, 'Owner name is required'),
+  ownerEmail: z.string().email({ message: 'Owner email is required' }),
+});
 
 export function CreateTrip() {
   const [isGuestListOpen, setIsGuestListOpen] = useState(false);
   const [isGuestModalOpen, setIsGuestModalOpen] = useState(false);
   const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false);
   const [emailsToInvite, setEmailsToInvite] = useState<string[]>([]);
-  const [destination, setDestination] = useState("");
+  const [destination, setDestination] = useState('');
   const [eventStartAndEndDates, setEventStartAndEndDates] = useState<
     DateRange | undefined
   >();
-  const [ownerName, setOwnerName] = useState("");
-  const [ownerEmail, setOwnerEmail] = useState("");
+  const [ownerName, setOwnerName] = useState('');
+  const [ownerEmail, setOwnerEmail] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  console.log('errors', errors);
   const navigate = useNavigate();
 
   const openGuestList = () => setIsGuestListOpen(true);
@@ -35,35 +52,56 @@ export function CreateTrip() {
   const createTrip = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (
-      !destination ||
-      !eventStartAndEndDates?.from ||
-      !eventStartAndEndDates.to ||
-      emailsToInvite.length === 0 ||
-      !ownerEmail ||
-      !ownerName
-    ) {
-      return;
+    try {
+      createTripSchema.parse({
+        destination,
+        eventStartAndEndDates,
+        emailsToInvite,
+        ownerName,
+        ownerEmail,
+      });
+
+      if (
+        !destination ||
+        !eventStartAndEndDates?.from ||
+        !eventStartAndEndDates.to ||
+        emailsToInvite.length === 0 ||
+        !ownerEmail ||
+        !ownerName
+      ) {
+        return;
+      }
+
+      const response = await api.post('/trips', {
+        destination,
+        starts_at: eventStartAndEndDates.from,
+        ends_at: eventStartAndEndDates.to,
+        emails_to_invite: emailsToInvite,
+        owner_name: ownerName,
+        owner_email: ownerEmail,
+      });
+
+      const { tripId } = response.data;
+
+      navigate(`/trips/${tripId}`);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        for (const issue of error.issues) {
+          setErrors((prevState) => ({
+            ...prevState,
+            [issue.path[0] as string]: issue.message,
+          }));
+        }
+      } else {
+        console.error('Unexpected error: ', error);
+      }
     }
-
-    const response = await api.post("/trips", {
-      destination,
-      starts_at: eventStartAndEndDates.from,
-      ends_at: eventStartAndEndDates.to,
-      emails_to_invite: emailsToInvite,
-      owner_name: ownerName,
-      owner_email: ownerEmail,
-    });
-
-    const { tripId } = response.data;
-
-    navigate(`/trips/${tripId}`);
   };
 
   const addEmailToInviteList = (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     const data = new FormData(ev.currentTarget);
-    const email = data.get("email")?.toString();
+    const email = data.get('email')?.toString();
     if (!email || emailsToInvite.includes(email)) return;
     setEmailsToInvite((oldState) => [...oldState, email]);
     ev.currentTarget.reset();
@@ -94,6 +132,7 @@ export function CreateTrip() {
             openGuestList={openGuestList}
             setDestination={setDestination}
             setEventStartAndEndDates={setEventStartAndEndDates}
+            errors={errors}
           />
 
           {isGuestListOpen && (
@@ -108,11 +147,11 @@ export function CreateTrip() {
         <p className="text-sm text-zinc-500">
           By planning your trip using plann.er, you automatically
           <br />
-          accept our{" "}
+          accept our{' '}
           <a href="#" className="text-zinc-300 underline">
             Terms of Use
-          </a>{" "}
-          and{" "}
+          </a>{' '}
+          and{' '}
           <a href="#" className="text-zinc-300 underline">
             Privacy Policies
           </a>
