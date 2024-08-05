@@ -53,7 +53,7 @@ export function CreateTrip() {
     event.preventDefault();
 
     try {
-      createTripSchema.parse({
+      const parsedSchema = createTripSchema.parse({
         destination,
         eventStartAndEndDates,
         emailsToInvite,
@@ -61,24 +61,13 @@ export function CreateTrip() {
         ownerEmail,
       });
 
-      if (
-        !destination ||
-        !eventStartAndEndDates?.from ||
-        !eventStartAndEndDates.to ||
-        emailsToInvite.length === 0 ||
-        !ownerEmail ||
-        !ownerName
-      ) {
-        return;
-      }
-
       const response = await api.post('/trips', {
-        destination,
-        starts_at: eventStartAndEndDates.from,
-        ends_at: eventStartAndEndDates.to,
-        emails_to_invite: emailsToInvite,
-        owner_name: ownerName,
-        owner_email: ownerEmail,
+        destination: parsedSchema.destination,
+        starts_at: parsedSchema.eventStartAndEndDates.from,
+        ends_at: parsedSchema.eventStartAndEndDates.to,
+        emails_to_invite: parsedSchema.emailsToInvite,
+        owner_name: parsedSchema.ownerName,
+        owner_email: parsedSchema.ownerEmail,
       });
 
       const { tripId } = response.data;
