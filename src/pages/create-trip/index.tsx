@@ -1,3 +1,4 @@
+import { useToast } from 'hooks/toast';
 import { FormEvent, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import { useNavigate } from 'react-router-dom';
@@ -34,6 +35,7 @@ export function CreateTrip() {
   const [ownerName, setOwnerName] = useState('');
   const [ownerEmail, setOwnerEmail] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const { toastError } = useToast();
 
   const navigate = useNavigate();
 
@@ -61,14 +63,19 @@ export function CreateTrip() {
         ownerEmail,
       });
 
-      const response = await api.post('/trips', {
-        destination: parsedSchema.destination,
-        starts_at: parsedSchema.eventStartAndEndDates.from,
-        ends_at: parsedSchema.eventStartAndEndDates.to,
-        emails_to_invite: parsedSchema.emailsToInvite,
-        owner_name: parsedSchema.ownerName,
-        owner_email: parsedSchema.ownerEmail,
-      });
+      const response = await api
+        .post('/trips', {
+          destination: parsedSchema.destination,
+          starts_at: parsedSchema.eventStartAndEndDates.from,
+          ends_at: parsedSchema.eventStartAndEndDates.to,
+          emails_to_invite: parsedSchema.emailsToInvite,
+          owner_name: parsedSchema.ownerName,
+          owner_email: parsedSchema.ownerEmail,
+        })
+        .catch((error: Error) => {
+          toastError(error.message);
+          throw error;
+        });
 
       const { tripId } = response.data;
 
