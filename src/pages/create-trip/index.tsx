@@ -34,7 +34,7 @@ export function CreateTrip() {
   const [ownerName, setOwnerName] = useState('');
   const [ownerEmail, setOwnerEmail] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  console.log('errors', errors);
+
   const navigate = useNavigate();
 
   const openGuestList = () => setIsGuestListOpen(true);
