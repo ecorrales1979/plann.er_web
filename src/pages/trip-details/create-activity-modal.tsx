@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { Modal } from '../../components/modal';
+import { useToast } from '../../hooks/toast';
 import { api } from '../../lib/axios';
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
 
 export function CreateActivityModal({ closeCreateActivityModal }: Props) {
   const { tripId } = useParams();
+  const { toastError } = useToast();
 
   const createActivity = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -19,9 +21,14 @@ export function CreateActivityModal({ closeCreateActivityModal }: Props) {
 
     const title = data.get('title');
     const occurs_at = data.get('occurs_at');
-    api.post(`/trips/${tripId}/activities`, { title, occurs_at }).then(() => {
-      closeCreateActivityModal();
-    });
+    api
+      .post(`/trips/${tripId}/activities`, { title, occurs_at })
+      .then(() => {
+        closeCreateActivityModal();
+      })
+      .catch((error: Error) => {
+        toastError(error.message);
+      });
   };
 
   return (
