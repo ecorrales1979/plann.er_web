@@ -1,9 +1,10 @@
-import { Calendar, MapPin, Settings2 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Button } from "../../components/button";
-import { TripDTO, TripResponseDTO } from "../../dtos";
-import { api } from "../../lib/axios";
-import { formatDateAndMonthRange } from "../../utils/format";
+import { Calendar, MapPin, Settings2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Button } from '../../components/button';
+import { TripDTO, TripResponseDTO } from '../../dtos';
+import { useToast } from '../../hooks/toast';
+import { api } from '../../lib/axios';
+import { formatDateAndMonthRange } from '../../utils/format';
 
 type Props = {
   tripId: string;
@@ -11,12 +12,16 @@ type Props = {
 
 export function DestinationAndDateHeader({ tripId }: Props) {
   const [trip, setTrip] = useState<TripDTO | undefined>();
+  const { toastError } = useToast();
 
   useEffect(() => {
     api
       .get<TripResponseDTO>(`/trips/${tripId}`)
-      .then((response) => setTrip(response.data.trip));
-  }, [tripId]);
+      .then((response) => setTrip(response.data.trip))
+      .catch((error: Error) => {
+        toastError(error.message);
+      });
+  }, [tripId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="px-4 h-16 rounded-xl bg-zinc-900 shadow-shape flex items-center justify-between">
