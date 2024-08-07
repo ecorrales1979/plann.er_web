@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { Modal } from '../../components/modal';
+import { useToast } from '../../hooks/toast';
 import { api } from '../../lib/axios';
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
 
 export function CreateLinkModal({ onClose }: Props) {
   const { tripId } = useParams();
+  const { toastError } = useToast();
 
   const createLink = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -19,9 +21,14 @@ export function CreateLinkModal({ onClose }: Props) {
 
     const title = data.get('title');
     const url = data.get('url');
-    api.post(`/trips/${tripId}/links`, { title, url }).then(() => {
-      onClose();
-    });
+    api
+      .post(`/trips/${tripId}/links`, { title, url })
+      .then(() => {
+        onClose();
+      })
+      .catch((error: Error) => {
+        toastError(error.message);
+      });
   };
 
   return (
