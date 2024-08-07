@@ -1,8 +1,9 @@
-import { CircleCheck, CircleDashed, UserCog } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Button } from "../../components/button";
-import { ParticipantDTO, ParticipantsResponseDTO } from "../../dtos";
-import { api } from "../../lib/axios";
+import { CircleCheck, CircleDashed, UserCog } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Button } from '../../components/button';
+import { ParticipantDTO, ParticipantsResponseDTO } from '../../dtos';
+import { useToast } from '../../hooks/toast';
+import { api } from '../../lib/axios';
 
 type Props = {
   tripId: string;
@@ -10,12 +11,16 @@ type Props = {
 
 export function Guests({ tripId }: Props) {
   const [participants, setParticipants] = useState<ParticipantDTO[]>([]);
+  const { toastError } = useToast();
 
   useEffect(() => {
     api
       .get<ParticipantsResponseDTO>(`/trips/${tripId}/participants`)
-      .then((response) => setParticipants(response.data.participants));
-  }, [tripId]);
+      .then((response) => setParticipants(response.data.participants))
+      .catch((error: Error) => {
+        toastError(error.message);
+      });
+  }, [tripId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="space-y-6">
