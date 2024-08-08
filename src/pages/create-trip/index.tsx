@@ -163,10 +163,13 @@ export function CreateTrip() {
         />
       )}
 
-      {isConfirmTripModalOpen && (
+      {isConfirmTripModalOpen && destination && eventStartAndEndDates && (
         <ConfirmTripModal
           closeConfirmTripModal={closeConfirmTripModal}
           createTrip={createTrip}
+          dateEnd={eventStartAndEndDates.from!}
+          dateStart={eventStartAndEndDates.to!}
+          destination={destination}
           ownerEmail={ownerEmail}
           ownerName={ownerName}
           setOwnerEmail={setOwnerEmail}
