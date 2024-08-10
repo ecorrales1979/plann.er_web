@@ -2,10 +2,12 @@ import { ArrowRight, Calendar, MapPin, Settings2 } from 'lucide-react';
 import { useState } from 'react';
 import { DateRange, DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import { z } from 'zod';
 import { Button } from '../../../components/button';
 import { Input } from '../../../components/input';
 import { Modal } from '../../../components/modal';
 import { formatDateAndMonthRange } from '../../../utils/format';
+import { destinationAndDateSchema } from '../schemas';
 
 type Props = {
   isGuestListOpen: boolean;
@@ -15,7 +17,6 @@ type Props = {
   setDestination: (destination: string) => void;
   eventStartAndEndDates?: DateRange;
   setEventStartAndEndDates: (range?: DateRange) => void;
-  errors: Record<string, string>;
 };
 
 export function DestinationAndDateStep({
@@ -26,11 +27,32 @@ export function DestinationAndDateStep({
   openGuestList,
   setDestination,
   setEventStartAndEndDates,
-  errors,
 }: Props) {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const openDatePicker = () => setIsDatePickerOpen(true);
+  const handleOpenGuestList = () => {
+    try {
+      destinationAndDateSchema.parse({ destination, eventStartAndEndDates });
+      openGuestList();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        for (const issue of error.issues) {
+          setErrors((prevState) => ({
+            ...prevState,
+            [issue.path[0] as string]: issue.message,
+          }));
+        }
+      } else {
+        console.error('Unexpected error: ', error);
+      }
+    }
+  };
+
+  const openDatePicker = () => {
+    if (Object.keys(errors).length > 0) return;
+    setIsDatePickerOpen(true);
+  };
 
   const closeDatePicker = () => setIsDatePickerOpen(false);
 
@@ -90,7 +112,7 @@ export function DestinationAndDateStep({
           <Settings2 className="size-5" />
         </Button>
       ) : (
-        <Button onClick={openGuestList} color="primary">
+        <Button onClick={handleOpenGuestList} color="primary">
           Continue
           <ArrowRight className="size-5 text-lime-950" />
         </Button>

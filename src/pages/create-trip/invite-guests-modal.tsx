@@ -7,7 +7,7 @@ import { Modal } from '../../components/modal';
 type Props = {
   closeGuestsModal: () => void;
   emailsToInvite: string[];
-  addEmailToInviteList: (event: FormEvent<HTMLFormElement>) => void;
+  addEmailToInviteList: (email: string) => void;
   removeEmailFromInviteList: (emailToRemove: string) => void;
 };
 
@@ -17,6 +17,15 @@ export function InviteGuestsModal({
   emailsToInvite,
   removeEmailFromInviteList,
 }: Props) {
+  const handleAddEmail = (ev: FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
+    const data = new FormData(ev.currentTarget);
+    const email = data.get('email')?.toString();
+    if (!email || emailsToInvite.includes(email)) return;
+    addEmailToInviteList(email);
+    ev.currentTarget.reset();
+  };
+
   return (
     <Modal
       title="Select participants"
@@ -43,7 +52,7 @@ export function InviteGuestsModal({
       <div className="w-full h-px bg-zinc-800" />
 
       <form
-        onSubmit={addEmailToInviteList}
+        onSubmit={handleAddEmail}
         className="p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-2"
       >
         <AtSign className="size-5 text-zinc-400" />

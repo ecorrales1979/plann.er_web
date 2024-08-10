@@ -6,22 +6,9 @@ import { useToast } from '../../hooks/toast';
 import { api } from '../../lib/axios';
 import { ConfirmTripModal } from './confirm-trip-modal';
 import { InviteGuestsModal } from './invite-guests-modal';
+import { createTripSchema } from './schemas';
 import { DestinationAndDateStep } from './steps/destination-and-date-step';
 import { InviteGuestsStep } from './steps/invite-guests-step';
-
-const createTripSchema = z.object({
-  destination: z.string().min(1, 'Destination is required'),
-  eventStartAndEndDates: z.object(
-    {
-      from: z.date({ message: 'Start date is required' }),
-      to: z.date({ invalid_type_error: 'End date is required' }),
-    },
-    { message: 'Dates are required' }
-  ),
-  emailsToInvite: z.array(z.string().email()),
-  ownerName: z.string().min(1, 'Owner name is required'),
-  ownerEmail: z.string().email({ message: 'Owner email is required' }),
-});
 
 export function CreateTrip() {
   const [isGuestListOpen, setIsGuestListOpen] = useState(false);
@@ -34,7 +21,6 @@ export function CreateTrip() {
   >();
   const [ownerName, setOwnerName] = useState('');
   const [ownerEmail, setOwnerEmail] = useState('');
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const { toastError } = useToast();
 
   const navigate = useNavigate();
@@ -82,25 +68,28 @@ export function CreateTrip() {
       navigate(`/trips/${tripId}`);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        for (const issue of error.issues) {
-          setErrors((prevState) => ({
-            ...prevState,
-            [issue.path[0] as string]: issue.message,
-          }));
-        }
+        // for (const issue of error.issues) {
+        //   setErrors((prevState) => ({
+        //     ...prevState,
+        //     [issue.path[0] as string]: issue.message,
+        //   }));
+        // }
+        toastError(
+          'Some required information is missing. Please, go back and check it'
+        );
       } else {
         console.error('Unexpected error: ', error);
       }
     }
   };
 
-  const addEmailToInviteList = (ev: FormEvent<HTMLFormElement>) => {
-    ev.preventDefault();
-    const data = new FormData(ev.currentTarget);
-    const email = data.get('email')?.toString();
-    if (!email || emailsToInvite.includes(email)) return;
+  const addEmailToInviteList = (email: string) => {
+    // ev.preventDefault();
+    // const data = new FormData(ev.currentTarget);
+    // const email = data.get('email')?.toString();
+    // if (!email || emailsToInvite.includes(email)) return;
     setEmailsToInvite((oldState) => [...oldState, email]);
-    ev.currentTarget.reset();
+    // ev.currentTarget.reset();
   };
 
   const removeEmailFromInviteList = (emailToRemove: string) => {
@@ -128,7 +117,6 @@ export function CreateTrip() {
             openGuestList={openGuestList}
             setDestination={setDestination}
             setEventStartAndEndDates={setEventStartAndEndDates}
-            errors={errors}
           />
 
           {isGuestListOpen && (
