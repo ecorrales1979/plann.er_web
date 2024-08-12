@@ -61,4 +61,14 @@ describe('Testing formatDateAndMonthRange function', () => {
     });
     expect(formattedDate).toBe('Jan, 1st');
   });
+
+  it('Should throw error when one date is invalid', () => {
+    function formatDateAndMonthRangeError() {
+      return formatDateAndMonthRange({
+        from: '2024-01-32',
+        to: date1Str,
+      });
+    }
+    expect(formatDateAndMonthRangeError).toThrow('Error formatting date:');
+  });
 });
