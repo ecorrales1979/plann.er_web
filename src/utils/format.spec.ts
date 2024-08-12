@@ -7,7 +7,6 @@ const date2 = new Date(date2Str);
 
 describe('Testing formatDateAndMonth function', () => {
   it('should return formatted date and month from Date', () => {
-    // const date = new Date('2024-01-01');
     const formattedDate = formatDateAndMonth(date1);
     expect(formattedDate).toBe('Jan, 1st');
   });
