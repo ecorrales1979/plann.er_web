@@ -1,8 +1,12 @@
 import { addMinutes, compareDesc, format } from 'date-fns';
 
 export function formatDateAndMonth(date: Date | string) {
-  const adjustedDate = getDateUTC(date);
-  return format(adjustedDate, "LLL', 'do", {});
+  try {
+    const adjustedDate = getDateUTC(date);
+    return format(adjustedDate, "LLL', 'do", {});
+  } catch (error) {
+    throw new Error(`Error formatting date: ${error}`);
+  }
 }
 
 export function formatDateAndMonthRange({

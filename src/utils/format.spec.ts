@@ -16,6 +16,13 @@ describe('Testing formatDateAndMonth function', () => {
     const formattedDate = formatDateAndMonth(date1Str);
     expect(formattedDate).toBe('Jan, 1st');
   });
+
+  it('Should return error if param string is not valid', () => {
+    function formatDateAndMonthError() {
+      return formatDateAndMonth('2024-01-32');
+    }
+    expect(formatDateAndMonthError).toThrow('Error formatting date:');
+  });
 });
 
 describe('Testing formatDateAndMonthRange function', () => {
